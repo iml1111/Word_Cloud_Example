@@ -52,7 +52,6 @@ function word_cloud(width_, height_, file_, color_list_, interval_, font_, selec
                     })
                     .attr("transform", function (d) {
                         var rot_ = ((d.rotate == 90) && (Math.random() >= 0.8)) ? 0:d.rotate;
-                        console.log(rot_);
                         return "translate(" + [d.x, d.y] + ")rotate(" + rot_ + ")";
                     })
                     .style("fill-opacity", 1); 
