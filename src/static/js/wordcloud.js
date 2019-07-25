@@ -9,7 +9,7 @@ function word_cloud(width_, height_, file_, color_list_, interval_, font_, selec
                  //console.log(data)
             },interval_) 
     });
-    wordScale = d3.scale.linear().domain([0, 100]).range([0, 150]).clamp(true);
+    wordScale = d3.scale.linear().domain([0, 200]).range([0, 100]).clamp(true);
     var svg = d3.select("svg")
                     .append("g")
                     .attr("transform", "translate(" + width_ / 2 + "," + height_ / 2 + ")")
@@ -19,7 +19,8 @@ function word_cloud(width_, height_, file_, color_list_, interval_, font_, selec
                 //클라우드 레이아웃에 데이터 전달
                 .words(data)
                 .rotate(function (d) {
-                    return d.text.length > 3 ? 0 : 90;
+                    // return d.text.length > 3 ? 0 : 90;
+                    return 0;
                 })
                 //스케일로 각 단어의 크기를 설정
                 .fontSize(function (d) {
@@ -36,13 +37,16 @@ function word_cloud(width_, height_, file_, color_list_, interval_, font_, selec
                     .append("text")
                     .style("font-family", font_)
                     .style("fill", function (d) {
-                        return color_list_[Math.floor(Math.random() * color_list_.length)];
+                        if(d.text[0]=="0"){
+                            return color_list_[0];
+                        }
+                        return color_list_[Math.floor(Math.random() * color_list_.length + 1)];
                     })
                     .style("fill-opacity", .5)
                     .attr("text-anchor", "middle") 
                     .attr('font-size', 1)
                     .text(function (d) {
-                        return d.text;
+                        return d.text.substr(1,d.text.length-1).toLowerCase();
                     });
                 cloud
                     .transition()
@@ -51,7 +55,7 @@ function word_cloud(width_, height_, file_, color_list_, interval_, font_, selec
                         return d.size + "px";
                     })
                     .attr("transform", function (d) {
-                        var rot_ = ((d.rotate == 90) && (Math.random() >= 0.8)) ? 0:d.rotate;
+                        var rot_ = (d.text == "모닥불") ? 0:d.rotate;
                         return "translate(" + [d.x, d.y] + ")rotate(" + rot_ + ")";
                     })
                     .style("fill-opacity", 1); 
